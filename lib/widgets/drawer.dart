@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:speedometer_light/views/help_page.dart';
+import 'package:speedometer_light/views/about_page.dart';
 import 'package:speedometer_light/views/settings_page.dart';
 import 'package:speedometer_light/views/speed_page.dart';
 
@@ -34,7 +34,7 @@ class AppDrawer extends StatelessWidget {
                 text: 'Help',
                 onTap: () => Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (context) => HelpPage()),
+                    MaterialPageRoute(builder: (context) => AboutPage()),
                     (r) => false)),
             Divider(),
           ],

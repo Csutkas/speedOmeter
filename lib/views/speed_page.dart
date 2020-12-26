@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:speedometer_light/widgets/drawer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:speedometer_light/variables.dart';
 import 'package:speedometer_light/views/settings_page.dart';
+import 'package:speedometer_light/views/about_page.dart';
+import 'package:speedometer_light/widgets/drawer.dart';
+
 //Helpers
 import 'package:speedometer_light/helpers/max_speed.dart';
 import 'package:speedometer_light/helpers/unit_converter.dart';
-
-// Theming
-import 'package:provider/provider.dart';
-import 'package:speedometer_light/models/theme_model.dart';
 
 // Location
 import 'package:geolocator/geolocator.dart';
@@ -42,6 +40,22 @@ class _SpeedsPageState extends State<SpeedsPage> {
           "Measure speed",
           style: Theme.of(context).textTheme.headline6,
         ),
+        leading: Padding(
+            padding: EdgeInsets.only(left: 10.0),
+            child: GestureDetector(
+              child: Icon(
+                Icons.info_outline,
+                size: 0.05.sw,
+              ),
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AboutPage(),
+                ),
+              ).then(
+                (context) => setState(() => {}),
+              ),
+            )),
         actions: <Widget>[
           Padding(
               padding: EdgeInsets.only(right: 20.0),
@@ -56,12 +70,13 @@ class _SpeedsPageState extends State<SpeedsPage> {
                     builder: (context) => SettingsPage(),
                   ),
                 ).then(
-                  (value) => setState(() => {}),
+                  (context) => setState(() => {}),
                 ),
               ))
         ],
       ),
-      drawer: AppDrawer(),
+      //drawer: AppDrawer(),
+
       body: Container(
         width: 1.0.sw,
         child: Column(
@@ -74,48 +89,31 @@ class _SpeedsPageState extends State<SpeedsPage> {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(
-                      top: 18, bottom: 5.0, left: 8.0, right: 8.0),
+                      top: 15, bottom: 5.0, left: 12.0, right: 12.0),
                   child: Container(
                     width: 0.95.sw,
-                    height: 0.50.sw,
+                    height: 0.80.sw,
                     child: Card(
                       margin: EdgeInsets.all(0),
                       child: Center(
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
+                            Text("Speed",
+                                style: Theme.of(context).textTheme.headline2),
                             Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 20.0, top: 15.0, bottom: 0.0),
-                              child: Text("Speed",
-                                  style: Theme.of(context).textTheme.headline2),
+                              padding: const EdgeInsets.only(top: 0.0),
+                              child: Text(
+                                SpeedConverter()
+                                    .unitConverter(_currentSpeed,
+                                        speedUnitHandler(activeSpeedUnit))
+                                    .toString(),
+                                style: Theme.of(context).textTheme.headline1,
+                              ),
                             ),
-                            Row(
-                              children: [
-                                Center(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 20.0, top: 0.0),
-                                    child: Text(
-                                      SpeedConverter().unitConverter(
-                                          _currentSpeed.toStringAsFixed(0),
-                                          'km/h'),
-                                      style:
-                                          Theme.of(context).textTheme.headline1,
-                                    ),
-                                  ),
-                                ),
-                                FlatButton(
-                                  padding: EdgeInsets.all(0.0),
-                                  onPressed: null,
-                                  child: Text(speedUnitHandler(activeSpeedUnit),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText2),
-                                )
-                              ],
-                            ),
+                            Text(speedUnitHandler(activeSpeedUnit),
+                                style: Theme.of(context).textTheme.bodyText2),
                           ],
                         ),
                       ),
@@ -124,55 +122,38 @@ class _SpeedsPageState extends State<SpeedsPage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
-                      top: 5.0, bottom: 5.0, left: 8.0, right: 8.0),
+                      top: 10.0, bottom: 5.0, left: 12.0, right: 12.0),
                   child: Container(
-                    width: 0.45.sw,
-                    height: 0.45.sw,
+                    width: 0.95.sw,
+                    height: 0.4.sw,
                     child: Card(
                       margin: EdgeInsets.all(0.0),
                       child: Center(
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 20.0, top: 15.0, bottom: 8.0),
-                              child: Text("Max",
-                                  style: Theme.of(context).textTheme.headline2),
-                            ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Center(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 20.0),
-                                    child: Text(
-                                        SpeedConverter()
-                                            .unitConverter(
-                                                MaxSpeed().getMaxSpeed(
-                                                    _currentSpeed, resetValues),
-                                                'km/h')
-                                            .toStringAsFixed(0),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline1
-                                            .copyWith(fontSize: 55)),
+                            Text("Max",
+                                style: Theme.of(context).textTheme.headline2),
+                            Text(
+                                SpeedConverter()
+                                    .unitConverter(
+                                        MaxSpeed().getMaxSpeed(
+                                            _currentSpeed, resetValues),
+                                        'km/h')
+                                    .toStringAsFixed(0),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline1
+                                    .copyWith(fontSize: 35)),
+                            Text(
+                              speedUnitHandler(activeSpeedUnit),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2
+                                  .copyWith(
+                                    fontSize: 15,
                                   ),
-                                ),
-                                FlatButton(
-                                  onPressed: null,
-                                  child: Text(
-                                    speedUnitHandler(activeSpeedUnit),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyText2
-                                        .copyWith(
-                                          fontSize: 12,
-                                        ),
-                                  ),
-                                )
-                              ],
                             ),
                           ],
                         ),
@@ -183,12 +164,24 @@ class _SpeedsPageState extends State<SpeedsPage> {
               ],
             ),
 
-            FlatButton(
-                onPressed: () {
-                  resetValues = true;
-                  setState(() {});
-                },
-                child: Text("Reset")),
+            Padding(
+              padding:
+                  const EdgeInsets.only(bottom: 15.0, left: 12.0, right: 12.0),
+              child: Container(
+                width: 0.95.sw,
+                decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Color(0xffFFB2FF),
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(3.0))),
+                child: FlatButton(
+                    onPressed: () {
+                      resetValues = true;
+                      setState(() {});
+                    },
+                    child: Text("Reset")),
+              ),
+            ),
           ],
         ),
       ),
@@ -251,17 +244,17 @@ distanceBetween() async {
 }
 
 speedUnitHandler(settingsSpeed) {
+  String activeUnit;
   if (settingsSpeed == SpeedUnitValue.km) {
-    return 'km/h';
+    activeUnit = 'km/h';
   } else if (settingsSpeed == SpeedUnitValue.ms) {
-    return 'm/s';
+    activeUnit = 'm/s';
   } else if (settingsSpeed == SpeedUnitValue.knots) {
-    return 'knots';
+    activeUnit = 'knots';
   } else if (settingsSpeed == SpeedUnitValue.mph) {
-    return 'mph';
+    activeUnit = 'mph';
   } else {
-    return 'km/h';
+    activeUnit = 'km/h';
   }
-
-  //return speedUnitItem;
+  return activeUnit;
 }

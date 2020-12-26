@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:speedometer_light/models/theme_model.dart';
 
 import 'package:speedometer_light/variables.dart';
+import 'package:speedometer_light/style.dart';
 
 /*
 
@@ -44,8 +45,8 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  SpeedUnitValue _character = activeSpeedUnit;
-  ThemeValue _themeValue = ThemeValue.dark;
+  SpeedUnitValue _speedUnit = activeSpeedUnit;
+  ThemeValue _themeValue = activeTheme;
 
   @override
   Widget build(BuildContext context) {
@@ -58,12 +59,17 @@ class _SettingsPageState extends State<SettingsPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding:
-                  const EdgeInsets.only(top: 20.0, bottom: 10.0, left: 20.0),
+              padding: EdgeInsets.only(top: 20.0, bottom: 10.0, left: 20.0),
               child: Text('Change your speed theme:'),
             ),
             ListTile(
-              title: const Text('Dark'),
+              title: Text(
+                'Dark',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText2
+                    .copyWith(fontSize: 15),
+              ),
               leading: Radio(
                 value: ThemeValue.dark,
                 groupValue: _themeValue,
@@ -73,11 +79,18 @@ class _SettingsPageState extends State<SettingsPage> {
                     Provider.of<ThemeModel>(context, listen: false)
                         .toggleTheme();
                   });
+                  activeTheme = _themeValue;
                 },
               ),
             ),
             ListTile(
-              title: const Text('Light'),
+              title: Text(
+                'Light',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText2
+                    .copyWith(fontSize: 15),
+              ),
               leading: Radio(
                 value: ThemeValue.light,
                 groupValue: _themeValue,
@@ -87,6 +100,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     Provider.of<ThemeModel>(context, listen: false)
                         .toggleTheme();
                   });
+                  activeTheme = _themeValue;
                 },
               ),
             ),
@@ -96,60 +110,84 @@ class _SettingsPageState extends State<SettingsPage> {
               child: Text('Choose your speed unit:'),
             ),
             ListTile(
-              title: const Text('km/h'),
+              title: Text(
+                'km/h',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText2
+                    .copyWith(fontSize: 15),
+              ),
               leading: Radio(
                 value: SpeedUnitValue.km,
-                groupValue: _character,
+                groupValue: _speedUnit,
                 onChanged: (SpeedUnitValue value) {
                   setState(() {
-                    _character = value;
+                    _speedUnit = value;
                     setState(() {
-                      activeSpeedUnit = _character;
+                      activeSpeedUnit = _speedUnit;
                     });
                   });
                 },
               ),
             ),
             ListTile(
-              title: const Text('m/s'),
+              title: Text(
+                'm/s',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText2
+                    .copyWith(fontSize: 15),
+              ),
               leading: Radio(
                 value: SpeedUnitValue.ms,
-                groupValue: _character,
+                groupValue: _speedUnit,
                 onChanged: (SpeedUnitValue value) {
                   setState(() {
-                    _character = value;
+                    _speedUnit = value;
                     setState(() {
-                      activeSpeedUnit = _character;
+                      activeSpeedUnit = _speedUnit;
                     });
                   });
                 },
               ),
             ),
             ListTile(
-              title: const Text('knots'),
+              title: Text(
+                'knots',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText2
+                    .copyWith(fontSize: 15),
+              ),
               leading: Radio(
                 value: SpeedUnitValue.knots,
-                groupValue: _character,
+                groupValue: _speedUnit,
                 onChanged: (SpeedUnitValue value) {
                   setState(() {
-                    _character = value;
+                    _speedUnit = value;
                     setState(() {
-                      activeSpeedUnit = _character;
+                      activeSpeedUnit = _speedUnit;
                     });
                   });
                 },
               ),
             ),
             ListTile(
-              title: const Text('mph'),
+              title: Text(
+                'mph',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText2
+                    .copyWith(fontSize: 15),
+              ),
               leading: Radio(
                 value: SpeedUnitValue.mph,
-                groupValue: _character,
+                groupValue: _speedUnit,
                 onChanged: (SpeedUnitValue value) {
                   setState(() {
-                    _character = value;
+                    _speedUnit = value;
                     setState(() {
-                      activeSpeedUnit = _character;
+                      activeSpeedUnit = _speedUnit;
                     });
                   });
                 },

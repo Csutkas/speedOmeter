@@ -15,7 +15,7 @@ ThemeData darkTheme = ThemeData.dark().copyWith(
       headline1: TextStyle(
         color: Color(0xfff8f8f8),
         fontWeight: FontWeight.w300,
-        fontSize: 100.0,
+        fontSize: 120.0,
       ),
       headline2: TextStyle(
         color: Color(0xffBC86FC),
@@ -43,7 +43,7 @@ ThemeData lightTheme = ThemeData.light().copyWith(
       headline1: TextStyle(
         color: Color(0xff484848),
         fontWeight: FontWeight.w300,
-        fontSize: 100.0,
+        fontSize: 120.0,
       ),
       headline2: TextStyle(
         color: Color(0xff1f655d),
