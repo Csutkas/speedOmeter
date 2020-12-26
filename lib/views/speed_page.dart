@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:speedometer_light/widgets/drawer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:speedometer_light/variables.dart';
-
+import 'package:speedometer_light/views/settings_page.dart';
 //Helpers
 import 'package:speedometer_light/helpers/max_speed.dart';
 import 'package:speedometer_light/helpers/unit_converter.dart';
@@ -26,7 +26,6 @@ class _SpeedsPageState extends State<SpeedsPage> {
   StreamSubscription<Position> _positionStreamSubscription;
 
   final myController = TextEditingController();
-  String speedUnit = 'km/h';
 
   @override
   void initState() {
@@ -45,16 +44,21 @@ class _SpeedsPageState extends State<SpeedsPage> {
         ),
         actions: <Widget>[
           Padding(
-            padding: EdgeInsets.only(right: 20.0),
-            child: GestureDetector(
-              child: Icon(
-                Icons.wb_sunny_outlined,
-                size: 0.05.sw,
-              ),
-              onTap: () =>
-                  Provider.of<ThemeModel>(context, listen: false).toggleTheme(),
-            ),
-          ),
+              padding: EdgeInsets.only(right: 20.0),
+              child: GestureDetector(
+                child: Icon(
+                  Icons.settings,
+                  size: 0.05.sw,
+                ),
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SettingsPage(),
+                  ),
+                ).then(
+                  (value) => setState(() => {}),
+                ),
+              ))
         ],
       ),
       drawer: AppDrawer(),
@@ -96,7 +100,7 @@ class _SpeedsPageState extends State<SpeedsPage> {
                                     child: Text(
                                       SpeedConverter().unitConverter(
                                           _currentSpeed.toStringAsFixed(0),
-                                          speedUnit),
+                                          'km/h'),
                                       style:
                                           Theme.of(context).textTheme.headline1,
                                     ),
@@ -105,7 +109,7 @@ class _SpeedsPageState extends State<SpeedsPage> {
                                 FlatButton(
                                   padding: EdgeInsets.all(0.0),
                                   onPressed: null,
-                                  child: Text('km/h',
+                                  child: Text(speedUnitHandler(activeSpeedUnit),
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyText2),
@@ -148,7 +152,7 @@ class _SpeedsPageState extends State<SpeedsPage> {
                                             .unitConverter(
                                                 MaxSpeed().getMaxSpeed(
                                                     _currentSpeed, resetValues),
-                                                speedUnit)
+                                                'km/h')
                                             .toStringAsFixed(0),
                                         style: Theme.of(context)
                                             .textTheme
@@ -159,7 +163,7 @@ class _SpeedsPageState extends State<SpeedsPage> {
                                 FlatButton(
                                   onPressed: null,
                                   child: Text(
-                                    'km/h',
+                                    speedUnitHandler(activeSpeedUnit),
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyText2
@@ -244,4 +248,20 @@ class _PositionItem {
 distanceBetween() async {
   final distance = await Geolocator.distanceBetween(0, 0, 0, 0);
   return (distance);
+}
+
+speedUnitHandler(settingsSpeed) {
+  if (settingsSpeed == SpeedUnitValue.km) {
+    return 'km/h';
+  } else if (settingsSpeed == SpeedUnitValue.ms) {
+    return 'm/s';
+  } else if (settingsSpeed == SpeedUnitValue.knots) {
+    return 'knots';
+  } else if (settingsSpeed == SpeedUnitValue.mph) {
+    return 'mph';
+  } else {
+    return 'km/h';
+  }
+
+  //return speedUnitItem;
 }
